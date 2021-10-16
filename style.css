@@ -126,7 +126,7 @@ form button {
 }
 
 .warning-message {
-  color: #EA2234;
+  color: red;
   text-align: center;
 }
 
