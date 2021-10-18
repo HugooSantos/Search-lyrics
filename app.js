@@ -5,10 +5,15 @@ const prevAndNextContainer = document.querySelector('#prev-and-next-container')
 
 const apiURL = `https://api.lyrics.ovh`
 
+const fetchData = async url => {
+    const response = await fetch(url)
+    return await response.json()
+    
+
+}
+
 const getMoreSongs = async url => {
-    const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`)
-    const data = await response.json()
-    console.log(data);
+    const data = await fetchData(`https://cors-anywhere.herokuapp.com/${url}`)
     insertSongsIntoPage(data)
 }
 
@@ -29,10 +34,9 @@ const insertSongsIntoPage = songsInfo => {
     prevAndNextContainer.innerHTML = ''
 }
 
-const fetchSongs = async term => {
-    const response = await fetch(`${apiURL}/suggest/${term}`)
-    const data = await response.json()
 
+const fetchSongs = async term => {
+    const data = await fetchData(`${apiURL}/suggest/${term}`)
     insertSongsIntoPage(data)
 }
 
@@ -53,13 +57,12 @@ form.addEventListener('submit', event => {
 })
 
 const fetchLyrics = async (artist, songTitle) => {
-    const response = await fetch(`${apiURL}/v1/${artist}/${songTitle}`)
-    const data = await response.json()
-
+    const data = await fetchData(`${apiURL}/v1/${artist}/${songTitle}`)
+    const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>')
     songsContainer.innerHTML = `
     <li class="lyrics-container">
         <h2><strong>${songTitle}</strong> - ${artist}</h2>
-        <p class ="lyrics">${data.lyrics}</p>
+        <p class ="lyrics">${lyrics}</p>
     </li>
     `
 
@@ -67,10 +70,13 @@ const fetchLyrics = async (artist, songTitle) => {
 
 songsContainer.addEventListener('click', event => {
     const clickedElement = event.target
+
     if (clickedElement.tagName === 'BUTTON') {
         const artist = clickedElement.getAttribute('data-artist')
         const songTitle = clickedElement.getAttribute('data-song-title')
         
+        prevAndNextContainer.innerHTML = ''
+
         fetchLyrics(artist, songTitle)
     }
 })
