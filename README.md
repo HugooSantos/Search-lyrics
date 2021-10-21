@@ -7,4 +7,4 @@ dessa aplicação.</p>
 <li>HTML</li>
 <li>CSS</li>
 </ul>
-<img src="https://s3.ezgif.com/save/ezgif-3-9e39b1ce9449.gif" />
+<img src="./assents/gif.gif"/>
